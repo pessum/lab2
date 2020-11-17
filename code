@@ -1,0 +1,438 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <chrono>
+#include <Windows.h>
+using namespace std;
+
+
+int main() {
+	HANDLE N = GetStdHandle(STD_OUTPUT_HANDLE);
+	setlocale(LC_ALL, "Russian");
+	int arr[100];
+	int max, min;
+
+
+
+	int answer;
+	answer = 0;
+
+
+	max = arr[0];
+	min = 0;
+	srand(time(NULL));;
+	for (int i = 0; i < 100; i++) {
+		arr[i] = rand() % 199 - 99;
+	}
+	
+	while (answer != 9) {
+		SetConsoleTextAttribute(N, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		cout << "Введите номер задания: " << endl;
+		SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+		cout << "1. Создает целочисленный массив размерности N = 100. Элементы массивы должны принимать случайное значение в диапазоне от -99 до 99." << endl;
+		cout << "2. Отсортировать заданный в пункте 1 элементы массива […] сортировкой (от меньшего к большему). Определить время, затраченное на сортировку, используя библиотеку chrono." << endl;
+		cout << "3. Найти максимальный и минимальный элемент массива. Подсчитайте время поиска этих элементов в отсортированном массиве и неотсортированном, используя библиотеку chrono." << endl;
+		cout << "4. Выводит среднее значение (если необходимо, число нужно округлить) максимального и минимального значения. Выводит индексы всех элементов, которые равны этому значению, и их количество." << endl;
+		cout << "5. Выводит количество элементов в отсортированном массиве, которые меньше числа a, которое инициализируется пользователем." << endl;
+		cout << "6. Выводит количество элементов в отсортированном массиве, которые больше числа b, которое инициализируется пользователем." << endl;
+		cout << "7. Выводит информацию о том, есть ли введенное пользователем число в отсортированном массиве. Реализуйте алгоритм бинарного поиска. Сравните скорость его работы с обычным перебором. (*)" << endl;
+		cout << "8. Меняет местами элементы массива, индексы которых вводит пользователь. Выведите скорость обмена, используя библиотеку chrono." << endl;
+		cout << "Чтобы выйти, введите (9)" << endl;
+		cin >> answer;
+		system("CLS");
+
+
+		switch (answer)
+		{
+		case (1): {
+
+
+
+			SetConsoleTextAttribute(N, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << "Неотсортированный массив: " << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			for (int i = 0; i < 100; i++) {
+
+				cout << i << "|  " << arr[i] << " " << endl;
+
+
+			}
+			break;
+		}
+
+
+		case (2): {
+
+			int h;
+			auto start2 = chrono::high_resolution_clock::now();
+			for (int i = 0; i < 100; i++) {
+				for (int j = 0; j < 99 - i; j++) {
+					if (arr[j] > arr[j + 1]) {
+
+						h = arr[j];
+						arr[j] = arr[j + 1];
+						arr[j + 1] = h;
+					}
+				}
+			}
+			SetConsoleTextAttribute(N, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << "Отсортированный массив: " << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			for (int i = 0; i < 100; i++)
+			{
+				cout << i << "|  " << arr[i] << " " << endl;
+			}
+			auto end2 = chrono::high_resolution_clock::now();
+			chrono::duration<float> duration2 = end2 - start2;
+
+
+			cout.setf(ios::fixed, ios::floatfield);
+			cout.precision(7);
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Время, потраченное на сортировку: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << duration2.count() << endl;
+			cout << endl;
+
+			break;
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+		case (3): {
+			int h;
+			auto start1 = chrono::high_resolution_clock::now();
+			for (int i = 0; i < 100; i++) {
+				if (arr[i] > max)
+				{
+					max = arr[i];
+				}
+				if (arr[i] < min)
+				{
+					min = arr[i];
+				}
+			}
+			auto end1 = chrono::high_resolution_clock::now();
+			chrono::duration<float> duration1 = end1 - start1;
+
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Минимальный элемент: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << min << endl;
+
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Максимальный элемент: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << max << endl;
+
+			cout.setf(ios::fixed, ios::floatfield);
+			cout.precision(7);
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Время, потраченное на поиск max и min (в неотсортированном массиве): ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << duration1.count() << endl;
+			cout << endl;
+			for (int i = 0; i < 100; i++) {
+				for (int j = 0; j < 99 - i; j++) {
+					if (arr[j] > arr[j + 1]) {
+
+						h = arr[j];
+						arr[j] = arr[j + 1];
+						arr[j + 1] = h;
+					}
+				}
+			}
+
+			auto start3 = chrono::high_resolution_clock::now();
+			for (int i = 0; i < 100; i++) {
+				if (arr[i] > max)
+				{
+					max = arr[i];
+				}
+				if (arr[i] < min)
+				{
+					min = arr[i];
+				}
+			}
+			auto end3 = chrono::high_resolution_clock::now();
+
+			chrono::duration<float> duration3 = end3 - start3;
+
+
+			cout.setf(ios::fixed, ios::floatfield);
+			cout.precision(7);
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Время, потраченное на поиск max и min (в отсортированном массиве): ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << duration3.count() << endl;
+			cout << endl;
+
+			break;
+
+		}
+
+
+		case 4: {
+
+			for (int i = 0; i < 100; i++) {
+				if (arr[i] > max)
+				{
+					max = arr[i];
+				}
+				if (arr[i] < min)
+				{
+					min = arr[i];
+				}
+			}
+			int sr;
+			int am1 = 0;
+			sr = (max + (-min)) / 2;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Среднее значение max и min: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << sr << endl;
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Индексы элементов, равных среднему значению: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			for (int i = 0; i < 100; i++) {
+				if ((arr[i] == sr) || (-arr[i] == sr)) {
+					cout << i << " ";
+					am1++;
+				}
+			}
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Количество элементов, равных среднему значению: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << am1;
+			cout << endl;
+			cout << endl;
+			break;
+		}
+
+		case (5): {
+			int a;
+			int am2 = 0;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Введите число a: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cin >> a;
+			for (int i = 0; i < 100; i++) {
+				if (arr[i] < a) {
+					am2++;
+				}
+			}
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Количество элементов, которые меньше чем a: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << am2;
+			cout << endl;
+			break;
+		}
+		case (6): {
+			int b;
+			int am3 = 0;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Введите число b: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cin >> b;
+
+			for (int i = 0; i < 100; i++) {
+				if (arr[i] > b) {
+					am3++;
+				}
+			}
+			cout << endl;
+
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Количество элементов, которые больше чем b: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << am3;
+			cout << endl;
+			break;
+		}
+
+		case(8): {
+
+			int mn1, mn2, mn3;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Введите индексы элементов, которые необходимо поменять местами: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			int h;
+			for (int i = 0; i < 100; i++) {
+				for (int j = 0; j < 99 - i; j++) {
+					if (arr[j] > arr[j + 1]) {
+
+						h = arr[j];
+						arr[j] = arr[j + 1];
+						arr[j + 1] = h;
+					}
+				}
+			}
+			auto start4 = chrono::high_resolution_clock::now();
+			cin >> mn1;
+			cin >> mn2;
+			mn3 = arr[mn1];
+			arr[mn1] = arr[mn2];
+			arr[mn2] = mn3;
+			auto end4 = chrono::high_resolution_clock::now();
+			for (int i = 0; i < 100; i++) {
+				cout << i << "|  " << arr[i] << " " << endl;
+			}
+			chrono::duration<float> duration4 = end4 - start4;
+
+			cout.setf(ios::fixed, ios::floatfield);
+			cout.precision(7);
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Время, потраченное на обмен переменных: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << duration4.count() << endl;
+			cout << endl;
+			break;
+		}
+
+
+
+		case (7): {
+
+
+			int h;
+			for (int i = 0; i < 100; i++) {
+				for (int j = 0; j < 99 - i; j++) {
+					if (arr[j] > arr[j + 1]) {
+
+						h = arr[j];
+						arr[j] = arr[j + 1];
+						arr[j + 1] = h;
+					}
+				}
+			}
+			int n;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Введите искомый элемент: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cin >> n;
+
+			bool fl = false;
+			int left = 0;
+			int right = 99;
+			int middle;
+
+			auto start5 = chrono::high_resolution_clock::now();
+			while ((left <= right) && (fl != true)) {
+				middle = (left + right) / 2; 
+
+				if (arr[middle] == n) fl = true;
+				if (arr[middle] > n) right = middle - 1;
+				else left = middle + 1;
+			}
+			auto end5 = chrono::high_resolution_clock::now();
+
+			SetConsoleTextAttribute(N, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << "///////////////////////////////////" << endl;
+			cout << "Бинарный поиск: " << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			if (fl == 1) {
+				cout << "Элемент ";
+				SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				cout << n;
+				SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+				cout << " находится под номером ";
+				SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+				cout << middle << endl;
+			}
+			else cout << "В массиве этого элемента нет.";
+
+			chrono::duration<float> duration5 = end5 - start5;
+
+
+
+
+			cout.setf(ios::fixed, ios::floatfield);
+			cout.precision(7);
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Время, потраченное на бинарный поиск: ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << duration5.count() << endl;
+			cout << endl;
+			int key = 0;
+			SetConsoleTextAttribute(N, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << "///////////////////////////////////" << endl;
+			cout << "Линейный поиск: " << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			auto start6 = chrono::high_resolution_clock::now();
+			for (int i = 0; i < 100; i++) {
+				if (n == arr[i]) {
+					SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+					cout << "Элемент ";
+					SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+					cout << n;
+					SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+					cout << " находится под номером ";
+					SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+					cout << i << endl;
+					key = 1;
+				}
+			}
+			if (key == 0) {
+				SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+				cout << "В массиве этого элемента нет.";
+				SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			}
+			auto end6 = chrono::high_resolution_clock::now();
+			chrono::duration<float> duration6 = end6 - start6;
+			cout.setf(ios::fixed, ios::floatfield);
+			cout.precision(7);
+			cout << endl;
+			SetConsoleTextAttribute(N, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			cout << "Время, потраченное на линейный поиск (перебором): ";
+			SetConsoleTextAttribute(N, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			cout << duration6.count() << endl;
+			cout << endl;
+			cout << endl;
+
+
+
+
+
+			break;
+		}
+
+
+
+
+
+
+
+		}
+				
+
+		
+
+	}
+
+		return 0;
+	}
+	
+
+
+
